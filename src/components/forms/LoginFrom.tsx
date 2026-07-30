@@ -80,6 +80,10 @@ export default function LoginForm() {
 
           Cookies.set("token", token, { expires: 7 });
           Cookies.set("user", JSON.stringify(user), { expires: 7 });
+          Cookies.set("id", String(data.user.id));
+          Cookies.set("email", data.user.email);
+          Cookies.set("name", data.user.name);
+          Cookies.set("role", data.user.role);
           Cookies.set("role", user?.role || "", { expires: 7 });
 
           setUser(user);

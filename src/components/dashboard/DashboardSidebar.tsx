@@ -13,6 +13,8 @@ import {
   LogOut,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 
 const sidebarItems = [
   {
@@ -73,14 +75,6 @@ const sidebarItems = [
   },
 ];
 
-const handleLogout = () => {
-  document.cookie = "token=; path=/; max-age=0";
-  document.cookie = "user=; path=/; max-age=0";
-  document.cookie = "role=; path=/; max-age=0";
-
-  window.location.href = "/login";
-};
-
 type DashboardSidebarProps = {
   activeItem: string;
 };
@@ -89,6 +83,13 @@ export default function DashboardSidebar({
   activeItem,
 }: DashboardSidebarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const router = useRouter();
+  const { user, loading, setUser, logout_user } = useAuth();
+
+  const handleLogout = () => {
+    logout_user();
+    router.push("/login");
+  };
 
   return (
     <>

@@ -26,6 +26,7 @@ export default function Navbar() {
   const dictionary = lang === "bn" ? bnDictionary : enDictionary;
   const { common, login } = dictionary;
 
+  // console.log("user from useAuth -->", user);
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -191,11 +192,20 @@ export default function Navbar() {
                       </p>
                     </div>
                     <Link
-                      href="/admin/dashboard"
-                      className="rounded-md px-3 py-2 text-sm text-gray-800 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700"
+                      href="/my_booking"
+                      className=" rounded-lg bg-gray-100 px-3  py-2 text-sm text-gray-800 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700"
                     >
-                      Dashboard
+                      My Booking
                     </Link>
+                    {(user.role === "admin" || user.role === "superadmin") && (
+                      <Link
+                        href="/admin/dashboard"
+                        className="rounded-md px-3 py-2 text-sm text-gray-800 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700"
+                      >
+                        Dashboard
+                      </Link>
+                    )}
+
                     <button
                       type="button"
                       onClick={handleLogout}
