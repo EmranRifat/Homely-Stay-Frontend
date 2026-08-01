@@ -16,12 +16,14 @@ import Navbar from "../components/Navbar/index";
 import { Player, Controls } from "@lottiefiles/react-lottie-player";
 import Choice from "../components/Home/Choice";
 import AppStore from "../components/Home/Appstore";
+import { useRouter } from "next/navigation";
 
 export default function HomeClient() {
   const [activeCategory, setActiveCategory] = useState("apartments");
   const [showAll, setShowAll] = useState(false);
   const [isDiscountExpanded, setIsDiscountExpanded] = useState(true);
   const [isLocationExpanded, setIsLocationExpanded] = useState(true);
+  const router = useRouter();
 
   const { data: categories = [] } = useQuery({
     queryKey: ["categories"],
@@ -38,26 +40,25 @@ export default function HomeClient() {
     tabCategoryNameMap[activeCategory] || activeCategory;
 
   const selectedCategoryId = categories.find(
-    (category: Category) =>
+    (category) =>
       category.name.toLowerCase() === selectedCategoryName.toLowerCase(),
   )?.id;
 
   const payload = {
     page: 1,
     limit: 100,
-    category: selectedCategoryId ?? selectedCategoryName,
+    category: String(selectedCategoryId ?? selectedCategoryName),
   };
 
   const { data, isLoading, isFetching, isError, error } =
     useGetProductData(payload);
-
   const listings = data?.listings || [];
   const visibleListings = showAll ? listings : listings.slice(0, 8);
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
-<div
-  className="
+      <div
+        className="
     flex flex-col items-center justify-center
     py-8
 
@@ -72,14 +73,14 @@ export default function HomeClient() {
 
     transition-all duration-300
   "
->
-  <div className="w-fit">
-    <TabsComponent
-      activeTab={activeCategory}
-      onTabChange={setActiveCategory}
-    />
-  </div>
-</div>
+      >
+        <div className="w-fit">
+          <TabsComponent
+            activeTab={activeCategory}
+            onTabChange={setActiveCategory}
+          />
+        </div>
+      </div>
 
       {isLoading || isFetching ? (
         <div className="flex items-center justify-center py-20">
@@ -202,6 +203,7 @@ export default function HomeClient() {
                 <img
                   src="/lottie/Discount.svg"
                   alt="Discount"
+                  onClick={() => router.push("/my_booking")}
                   className="h-24 w-24 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
                 />
               )}
@@ -231,6 +233,8 @@ export default function HomeClient() {
                 <img
                   src="/lottie/Location.svg"
                   alt="Location"
+                                    onClick={() => router.push("/products")}
+
                   className="h-24 w-24 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
                 />
               )}

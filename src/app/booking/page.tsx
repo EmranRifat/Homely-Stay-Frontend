@@ -173,17 +173,26 @@ function BookingContent() {
     ? data.data
     : firstCartItem
       ? {
-        ...fallbackListing,
-        id: firstCartItem.product.id,
-        title: firstCartItem.product.name,
-        image: firstCartItem.product.image,
-        price_per_night: firstCartItem.product.price,
-        rating: 4.92,
-        reviews_count: 36,
-        category: firstCartItem.product.category || (firstCartItem.product as any).product_category?.name || "Apartment",
-        address: (firstCartItem.product as any).address || (firstCartItem.product as any).product_address || "Twin Towers Business District, Kuala Lumpur, Malaysia",
-        product_address: (firstCartItem.product as any).product_address || (firstCartItem.product as any).address || "Twin Towers Business District, Kuala Lumpur, Malaysia",
-      }
+          ...fallbackListing,
+          id: firstCartItem.product.id,
+          title: firstCartItem.product.name,
+          image: firstCartItem.product.image,
+          price_per_night: firstCartItem.product.price,
+          rating: 4.92,
+          reviews_count: 36,
+          category:
+            firstCartItem.product.category ||
+            (firstCartItem.product as any).product_category?.name ||
+            "Apartment",
+          address:
+            (firstCartItem.product as any).address ||
+            (firstCartItem.product as any).product_address ||
+            "Twin Towers Business District, Kuala Lumpur, Malaysia",
+          product_address:
+            (firstCartItem.product as any).product_address ||
+            (firstCartItem.product as any).address ||
+            "Twin Towers Business District, Kuala Lumpur, Malaysia",
+        }
       : fallbackListing;
 
   const [checkIn, setCheckIn] = useState(() =>
@@ -284,7 +293,10 @@ function BookingContent() {
             product_title: listing.title,
             product_image: listing.image,
             category: listing.category,
-            product_address: listing.address || listing.product_address || `${listing.city || ""}, ${listing.country || ""}`,
+            product_address:
+              listing.address ||
+              listing.product_address ||
+              `${listing.city || ""}, ${listing.country || ""}`,
             payment_method: "sslcommerz",
             check_in: toDateInputValue(checkIn),
             check_out: toDateInputValue(checkOut),
@@ -367,7 +379,10 @@ function BookingContent() {
             product_title: listing.title,
             product_image: listing.image,
             category: listing.category,
-            product_address: listing.address || listing.product_address || `${listing.city || ""}, ${listing.country || ""}`,
+            product_address:
+              listing.address ||
+              listing.product_address ||
+              `${listing.city || ""}, ${listing.country || ""}`,
             payment_method: "bkash",
             check_in: toDateInputValue(checkIn),
             check_out: toDateInputValue(checkOut),
@@ -384,7 +399,11 @@ function BookingContent() {
             user_information: {
               name: sslCustomer.customerName.trim() || user?.name || "",
               role: user?.role || "user",
-              phone: bkashDetails.mobileNumber.trim() || billing.phone || sslCustomer.customerPhone.trim() || "",
+              phone:
+                bkashDetails.mobileNumber.trim() ||
+                billing.phone ||
+                sslCustomer.customerPhone.trim() ||
+                "",
               email: sslCustomer.customerEmail.trim() || user?.email || "",
             },
             terms_accepted: acceptedTerms,
@@ -428,7 +447,10 @@ function BookingContent() {
       product_title: listing.title,
       product_image: listing.image,
       category: listing.category,
-      product_address: listing.address || listing.product_address || `${listing.city || ""}, ${listing.country || ""}`,
+      product_address:
+        listing.address ||
+        listing.product_address ||
+        `${listing.city || ""}, ${listing.country || ""}`,
       booking_id: sslCustomer.bookingId
         ? Number(sslCustomer.bookingId) || null
         : null,
@@ -477,31 +499,58 @@ function BookingContent() {
     }
   };
 
-  if (submitted) {
-    return (
-      <main className="min-h-screen bg-white px-4 py-12 text-gray-950">
-        <div className="mx-auto flex max-w-xl flex-col items-center text-center">
-          <CheckCircle2 className="h-16 w-16 text-emerald-500" />
-          <h1 className="mt-6 text-3xl font-semibold">Booking confirmed</h1>
-          <p className="mt-3 text-gray-600">
-            Your payment details were accepted for {listing.title}. Total paid:{" "}
-            <span className="font-semibold text-gray-950">
-              {formatCurrency(pricing.total, currency)}
-            </span>
-            .
+if (submitted) {
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-sky-50 px-4 py-12">
+      <div className="w-full max-w-xl rounded-3xl border border-emerald-100 bg-white p-10 text-center shadow-2xl">
+        <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-emerald-100">
+          <CheckCircle2 className="h-14 w-14 text-emerald-600" />
+        </div>
+
+        <h1 className="mt-6 text-3xl font-bold text-gray-900">
+          🎉 Booking Confirmed!
+        </h1>
+
+        <p className="mt-4 leading-7 text-gray-600">
+          Thank you for choosing us. Your booking for{" "}
+          <span className="font-semibold text-gray-900">
+            {listing.title}
+          </span>{" "}
+          has been successfully confirmed.
+        </p>
+
+        <div className="mt-6 rounded-2xl bg-gray-50 p-5">
+          <p className="text-sm text-gray-500">Total Paid</p>
+          <p className="mt-2 text-3xl font-bold text-emerald-600">
+            {formatCurrency(pricing.total, currency)}
           </p>
+        </div>
+
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
           <button
             type="button"
-            onClick={() => router.push("/")}
-            className="mt-8 rounded-lg bg-gray-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
+            onClick={() => router.push("/my_booking")}
+            className="rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition-all duration-300 hover:bg-emerald-700 hover:shadow-lg"
           >
-            Browse more stays
+            View My Bookings
+          </button>
+
+          <button
+            type="button"
+            onClick={() => router.push("/products")}
+            className="rounded-xl border border-gray-300 bg-white px-6 py-3 font-semibold text-gray-700 transition-all duration-300 hover:border-gray-900 hover:bg-gray-100"
+          >
+            Browse More Stays
           </button>
         </div>
-      </main>
-    );
-  }
 
+        <p className="mt-8 text-sm text-gray-500">
+          A confirmation email has been sent to your registered email address.
+        </p>
+      </div>
+    </main>
+  );
+}
   return (
     <main className="min-h-screen bg-white text-gray-950">
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
@@ -528,10 +577,11 @@ function BookingContent() {
 
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               <label
-                className={`flex min-h-[92px] cursor-pointer items-center gap-4 rounded-lg border p-4 transition ${paymentMethod === "manual"
+                className={`flex min-h-[92px] cursor-pointer items-center gap-4 rounded-lg border p-4 transition ${
+                  paymentMethod === "manual"
                     ? "border-pink-500 bg-pink-50"
                     : "border-gray-200 hover:border-pink-300"
-                  }`}
+                }`}
               >
                 <input
                   type="radio"
@@ -558,10 +608,11 @@ function BookingContent() {
               </label>
 
               <label
-                className={`flex min-h-[92px] cursor-pointer items-center gap-4 rounded-lg border p-4 transition ${paymentMethod === "bkash"
+                className={`flex min-h-[92px] cursor-pointer items-center gap-4 rounded-lg border p-4 transition ${
+                  paymentMethod === "bkash"
                     ? "border-pink-500 bg-pink-50"
                     : "border-gray-200 hover:border-pink-300"
-                  }`}
+                }`}
               >
                 <input
                   type="radio"
@@ -583,10 +634,11 @@ function BookingContent() {
               </label>
 
               <label
-                className={`flex min-h-[92px] cursor-pointer items-center gap-4 rounded-lg border p-4 transition sm:col-span-2 ${paymentMethod === "sslcommerz"
+                className={`flex min-h-[92px] cursor-pointer items-center gap-4 rounded-lg border p-4 transition sm:col-span-2 ${
+                  paymentMethod === "sslcommerz"
                     ? "border-pink-500 bg-pink-50"
                     : "border-gray-200 hover:border-pink-300"
-                  }`}
+                }`}
               >
                 <input
                   type="radio"
@@ -638,18 +690,22 @@ function BookingContent() {
                         maxLength={11}
                         value={billing.phone}
                         onChange={(event) => {
-                          const digitsOnly = event.target.value.replace(/\D/g, "").slice(0, 11);
+                          const digitsOnly = event.target.value
+                            .replace(/\D/g, "")
+                            .slice(0, 11);
                           setBilling({ ...billing, phone: digitsOnly });
                         }}
                         placeholder="01712345678"
                         pattern="\d{11}"
                         className={`h-12 w-full rounded-lg border px-4 outline-none transition focus:ring-2 focus:ring-pink-100 ${
-                          billing.phone.length > 0 && billing.phone.length !== 11
+                          billing.phone.length > 0 &&
+                          billing.phone.length !== 11
                             ? "border-red-400 focus:border-red-400"
                             : "border-gray-300 focus:border-pink-400"
                         }`}
                       />
-                      {billing.phone.length > 0 && billing.phone.length !== 11 ? (
+                      {billing.phone.length > 0 &&
+                      billing.phone.length !== 11 ? (
                         <span className="mt-1 block text-xs text-red-500">
                           Must be exactly 11 digits ({billing.phone.length}/11)
                         </span>

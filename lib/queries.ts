@@ -1,12 +1,17 @@
 import {
-  Category,
+  
   ManualBookingPayload,
   ProductDetail,
   SslPaymentInitPayload,
   SslPaymentInitResponse,
 } from "./types/types";
 import Cookies from "js-cookie";
+// types/types.ts
 
+interface Category {
+  id: number;
+  name: string;
+}
 
 
 async function fetchJSON<T>(url: string, options?: RequestInit): Promise<T> {

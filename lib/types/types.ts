@@ -534,5 +534,3 @@ export interface GetReviewsResponse {
   };
   data: Review[];
 }
-
-

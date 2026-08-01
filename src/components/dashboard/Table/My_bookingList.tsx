@@ -1,7 +1,9 @@
 "use client";
 
 import { useMyBookings } from "@/lib/hooks/useGetBookingbyID";
-
+import { useState } from "react";
+import BookingDetailsModal from "../../modal/BookingDetailsModal";
+import { useAuth } from "@/lib/auth-context";
 const formatDate = (value?: string) => {
   if (!value) return "-";
 
@@ -39,9 +41,19 @@ const getStatusBadge = (status?: string) => {
 };
 
 export default function MyBookingList() {
+  const { user } = useAuth();
+
   const { data, isLoading, isError } = useMyBookings();
 
   const bookings = data?.data ?? [];
+
+  const [selectedBooking, setSelectedBooking] = useState<any>(null);
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = (booking: any) => {
+    setSelectedBooking(booking);
+    setOpen(true);
+  };
 
   if (isLoading) {
     return (
@@ -114,7 +126,8 @@ export default function MyBookingList() {
               {bookings.map((item: any, index: number) => (
                 <tr
                   key={item.id}
-                  className="hover:bg-gray-50 dark:hover:bg-slate-800"
+                  onClick={() => handleOpen(item)}
+                  className="cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition"
                 >
                   <td className="px-4 py-4 text-gray-700 dark:text-gray-300">
                     {index + 1}
@@ -207,6 +220,13 @@ export default function MyBookingList() {
           </table>
         </div>
       )}
+
+      <BookingDetailsModal
+        booking={selectedBooking}
+        user={user}
+        isOpen={open}
+        onClose={() => setOpen(false)}
+      />
     </div>
   );
 }

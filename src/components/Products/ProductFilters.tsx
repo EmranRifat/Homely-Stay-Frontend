@@ -10,7 +10,7 @@ import {
   Tag,
 } from "lucide-react";
 import { Checkbox } from "@/src/components/ui/checkbox";
-import { Category, SideCategory } from "@/lib/types/types";
+import { SideCategory } from "@/lib/types/types";
 import { Slider } from "../ui/slider";
 
 export type ProductSortOption =
