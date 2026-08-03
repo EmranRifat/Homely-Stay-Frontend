@@ -130,11 +130,19 @@ export default function Navbar() {
         <div className="flex shrink-0 items-center justify-end gap-2 sm:gap-3">
           <Link
             href="/become-a-host"
-            className="hidden rounded-full bg-linear-to-r from-blue-500 to-cyan-500 px-3 py-2 text-sm font-semibold text-white shadow-md transition-all hover:scale-105 hover:shadow-lg sm:block"
+            className="group relative hidden overflow-hidden rounded-full p-[2px] sm:block"
           >
-            Become a host
-          </Link>
+            {/* Animated Border */}
+            <span className="absolute inset-0 rounded-full bg-[linear-gradient(90deg,#3b82f6,#06b6d4,#8b5cf6,#ec4899,#3b82f6)] bg-[length:300%_100%] animate-gradient" />
 
+            {/* Shine Effect */}
+            <span className="absolute -left-1/2 top-0 h-full w-1/2 -skew-x-12 bg-white/20 blur-md transition-all duration-1000 group-hover:left-[130%]" />
+
+            {/* Button */}
+            <span className="relative flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 via-cyan-500 to-sky-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_25px_rgba(14,165,233,0.35)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:scale-[1.04] group-hover:shadow-[0_12px_35px_rgba(14,165,233,0.5)]">
+              ✨ Become a Host
+            </span>
+          </Link>
           <div ref={menuRef} className="relative shrink-0">
             <button
               type="button"
@@ -183,7 +191,7 @@ export default function Navbar() {
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2">
-                    <div className="rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-700/50">
+                    <div className="rounded-lg bg-gray-100 px-3 py-2 dark:bg-gray-700/50">
                       <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
                         {user.name}
                       </p>
@@ -193,14 +201,14 @@ export default function Navbar() {
                     </div>
                     <Link
                       href="/my_booking"
-                      className=" rounded-lg bg-gray-100 px-3  py-2 text-sm text-gray-800 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700"
+                      className=" rounded-lg  bg-gray-100 px-3 dark:bg-gray-700/50  py-2 text-sm text-gray-800 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700"
                     >
                       My Booking
                     </Link>
                     {(user.role === "admin" || user.role === "superadmin") && (
                       <Link
                         href="/admin/dashboard"
-                        className="rounded-md px-3 py-2 text-sm text-gray-800 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700"
+                        className=" rounded-lg  bg-gray-100 px-3 dark:bg-gray-700/50  py-2 text-sm text-gray-800 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700"
                       >
                         Dashboard
                       </Link>

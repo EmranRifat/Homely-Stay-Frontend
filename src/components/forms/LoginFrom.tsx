@@ -97,7 +97,7 @@ export default function LoginForm() {
               ? redirect
               : "/";
 
-          if (user?.role === "admin") {
+          if (user?.role === "admin" || user?.role === "superadmin") {
             router.push("/admin/dashboard");
           } else {
             router.push(redirectTo);
