@@ -23,8 +23,9 @@ export default function BecomeAHostPage() {
   };
 
   return (
-<main className="relative min-h-[calc(100vh-80px)] overflow-hidden bg-gradient-to-br from-rose-50 via-white to-orange-50 transition-all duration-500 dark:from-[#0b1120] dark:via-[#111827] dark:to-[#1e1b4b]">      <LineParticles />
-
+    <main className="relative min-h-[calc(100vh-80px)] overflow-hidden bg-gradient-to-br from-rose-50 via-white to-orange-50 transition-all duration-500 dark:from-[#0b1120] dark:via-[#111827] dark:to-[#1e1b4b]">
+      {" "}
+      <LineParticles />
       <section className="relative z-10 mx-auto flex min-h-[calc(80vh-50px)] max-w-5xl flex-col items-center justify-center px-6 pb-24 pt-4 text-center">
         {/* Badge */}
         <div className="inline-flex items-center gap-3 rounded-full border border-gray-200 bg-white/90 px-5 py-3 text-sm font-medium text-gray-800 shadow-sm backdrop-blur-sm transition-colors duration-300 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200">

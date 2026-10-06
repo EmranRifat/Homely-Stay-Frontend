@@ -83,8 +83,8 @@ export default function LoginForm() {
           Cookies.set("id", String(data.user.id));
           Cookies.set("email", data.user.email);
           Cookies.set("name", data.user.name);
-          Cookies.set("role", data.user.role);
-          Cookies.set("role", user?.role || "", { expires: 7 });
+          Cookies.set("role", data.user.role.toLowerCase());
+          Cookies.set("role", user?.role?.toLowerCase() || "", { expires: 7 });
 
           setUser(user);
 
