@@ -33,10 +33,11 @@ const nextConfig = {
         pathname: "/uploads/**",
       },
 
-      // Render backend
+      // ************if update backend url change here************//
       {
         protocol: "https",
-        hostname: "go-fiber-api-96nd.onrender.com",
+        // hostname: "go-fiber-api-96nd.onrender.com",
+        hostname: "go-backend-ecommerz.onrender.com",
         pathname: "/uploads/**",
       },
     ],
