@@ -84,6 +84,7 @@ export const createManualBooking = async (payload: ManualBookingPayload): Promis
     delete normalizedPayload.user_addres;
   }
 
+
   const response = await fetch(`${baseUrl}/api/bookings`, {
     method: "POST",
     headers: {
@@ -121,6 +122,13 @@ export const createManualBooking = async (payload: ManualBookingPayload): Promis
 
   return { data: result.data, message: result.message };
 };
+
+
+
+
+
+
+
 
 export const initSslCommerzPayment = async (
   payload: SslPaymentInitPayload,

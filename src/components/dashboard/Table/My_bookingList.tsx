@@ -57,8 +57,16 @@ export default function MyBookingList() {
 
   if (isLoading) {
     return (
-      <div className="p-5 text-gray-700 dark:text-gray-300">
-        Loading bookings...
+      <div
+        className="flex min-h-48 items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white p-5 text-gray-700 shadow-sm dark:border-gray-700 dark:bg-slate-700 dark:text-gray-300"
+        role="status"
+        aria-live="polite"
+      >
+        <span
+          className="h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-pink-500 dark:border-gray-500 dark:border-t-pink-400"
+          aria-hidden="true"
+        />
+        <span>Loading bookings...</span>
       </div>
     );
   }

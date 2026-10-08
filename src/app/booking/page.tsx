@@ -34,6 +34,7 @@ import { useProductDetails } from "@/lib/hooks/product/useProductDetails";
 import { createManualBooking, initSslCommerzPayment } from "@/lib/queries";
 import type { SslPaymentInitData } from "@/lib/types/types";
 import { ToastContainer, toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query";
 import "react-toastify/dist/ReactToastify.css";
 
 const fallbackListing = {
@@ -277,6 +278,13 @@ function BookingContent() {
     setCheckOut(nextCheckOut);
   };
 
+  const queryClient = useQueryClient();
+
+
+
+
+
+  
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!acceptedTerms) return;
@@ -320,6 +328,10 @@ function BookingContent() {
           });
 
           bookingId = getCreatedBookingId(bookingResponse) || 0;
+
+          await queryClient.invalidateQueries({
+            queryKey: ["my-bookings"],
+          });
 
           if (bookingId) {
             setSslCustomer((prev) => ({
@@ -410,6 +422,9 @@ function BookingContent() {
           });
 
           bookingId = getCreatedBookingId(bookingResponse) || 0;
+          await queryClient.invalidateQueries({
+            queryKey: ["my-bookings"],
+          });
 
           if (bookingId) {
             setSslCustomer((prev) => ({
@@ -484,9 +499,16 @@ function BookingContent() {
       setIsSubmitting(true);
       console.log("Manual booking payload", manualBookingPayload);
       const response = await createManualBooking(manualBookingPayload);
+
+      // Refresh My Bookings immediately after successful booking creation
+      await queryClient.invalidateQueries({
+        queryKey: ["my-bookings"],
+      });
+
       toast.success(
         response.message || "Booking created successfully with manual payment",
       );
+
       setSubmitted(true);
     } catch (error) {
       const message =
@@ -499,58 +521,56 @@ function BookingContent() {
     }
   };
 
-if (submitted) {
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-sky-50 px-4 py-12">
-      <div className="w-full max-w-xl rounded-3xl border border-emerald-100 bg-white p-10 text-center shadow-2xl">
-        <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-emerald-100">
-          <CheckCircle2 className="h-14 w-14 text-emerald-600" />
-        </div>
+  if (submitted) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-sky-50 px-4 py-12">
+        <div className="w-full max-w-xl rounded-3xl border border-emerald-100 bg-white p-10 text-center shadow-2xl">
+          <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-emerald-100">
+            <CheckCircle2 className="h-14 w-14 text-emerald-600" />
+          </div>
 
-        <h1 className="mt-6 text-3xl font-bold text-gray-900">
-          🎉 Booking Confirmed!
-        </h1>
+          <h1 className="mt-6 text-3xl font-bold text-gray-900">
+            🎉 Booking Confirmed!
+          </h1>
 
-        <p className="mt-4 leading-7 text-gray-600">
-          Thank you for choosing us. Your booking for{" "}
-          <span className="font-semibold text-gray-900">
-            {listing.title}
-          </span>{" "}
-          has been successfully confirmed.
-        </p>
+          <p className="mt-4 leading-7 text-gray-600">
+            Thank you for choosing us. Your booking for{" "}
+            <span className="font-semibold text-gray-900">{listing.title}</span>{" "}
+            has been successfully confirmed.
+          </p>
 
-        <div className="mt-6 rounded-2xl bg-gray-50 p-5">
-          <p className="text-sm text-gray-500">Total Paid</p>
-          <p className="mt-2 text-3xl font-bold text-emerald-600">
-            {formatCurrency(pricing.total, currency)}
+          <div className="mt-6 rounded-2xl bg-gray-50 p-5">
+            <p className="text-sm text-gray-500">Total Paid</p>
+            <p className="mt-2 text-3xl font-bold text-emerald-600">
+              {formatCurrency(pricing.total, currency)}
+            </p>
+          </div>
+
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
+            <button
+              type="button"
+              onClick={() => router.push("/my_booking")}
+              className="rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition-all duration-300 hover:bg-emerald-700 hover:shadow-lg"
+            >
+              View My Bookings
+            </button>
+
+            <button
+              type="button"
+              onClick={() => router.push("/products")}
+              className="rounded-xl border border-gray-300 bg-white px-6 py-3 font-semibold text-gray-700 transition-all duration-300 hover:border-gray-900 hover:bg-gray-100"
+            >
+              Browse More Stays
+            </button>
+          </div>
+
+          <p className="mt-8 text-sm text-gray-500">
+            A confirmation email has been sent to your registered email address.
           </p>
         </div>
-
-        <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <button
-            type="button"
-            onClick={() => router.push("/my_booking")}
-            className="rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition-all duration-300 hover:bg-emerald-700 hover:shadow-lg"
-          >
-            View My Bookings
-          </button>
-
-          <button
-            type="button"
-            onClick={() => router.push("/products")}
-            className="rounded-xl border border-gray-300 bg-white px-6 py-3 font-semibold text-gray-700 transition-all duration-300 hover:border-gray-900 hover:bg-gray-100"
-          >
-            Browse More Stays
-          </button>
-        </div>
-
-        <p className="mt-8 text-sm text-gray-500">
-          A confirmation email has been sent to your registered email address.
-        </p>
-      </div>
-    </main>
-  );
-}
+      </main>
+    );
+  }
   return (
     <main className="min-h-screen bg-white text-gray-950">
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
